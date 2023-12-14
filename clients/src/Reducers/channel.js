@@ -11,4 +11,4 @@ const channelReducers=(states=[],action)=>{
     }
 }
 
-export default channelReducers
+export default channelReducers;

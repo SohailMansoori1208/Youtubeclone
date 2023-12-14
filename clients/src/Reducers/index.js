@@ -6,7 +6,7 @@ import channelReducers from './channel';
 export default combineReducers({
     authReducer,
     currentUserReducer,
-    channelReducers
+    channelReducers,
     
 
 });

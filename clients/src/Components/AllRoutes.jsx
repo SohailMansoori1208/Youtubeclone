@@ -14,6 +14,7 @@ import WatchLater from '../Pages/WatchLater/WatchLater';
 import YourVideos from '../Pages/YourVideos/yourvideos';
 import LikedVideos from '../Pages/LikedVideos/LikedVideos';
 import VideoPage from '../Pages/VideoPage/VideoPage';
+import Channel from '../Pages/Channel/Channel';
 function AllRoutes() {
   return (
     <Routes>
@@ -24,6 +25,8 @@ function AllRoutes() {
       <Route path="/likedvideos" element={<LikedVideos/>}/>
       <Route path="/YourVideos" element={<YourVideos/>}/>
       <Route path="/videopage/:vid" element={<VideoPage/>}/>
+      <Route path="/channelpage/:Cid" element={<Channel/>}/>
+
     </Routes>
   )
 }
