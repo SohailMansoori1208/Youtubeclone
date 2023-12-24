@@ -5,10 +5,24 @@ import Navbar from './Components/Navbar/Navbar';
 import {
   BrowserRouter as Router,
 } from "react-router-dom";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CreateEditChannel from './Pages/Channel/CreateEditChannel';
+import { useDispatch } from 'react-redux';
+import { fetchAllChannel } from './actions/channelUsers';
+import VideoUpload from './Pages/VideoUpload/VideoUpload';
+import { getAllVideos } from './actions/video';
+import { getAlllikedVideo } from './actions/likedVideo';
+
 
 function App() {
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    dispatch(fetchAllChannel());
+    dispatch(getAllVideos());
+    dispatch(getAlllikedVideo);
+  },[dispatch]);
+
   const [toggleDrawerSidebar, setToggleDrawerSidebar] = useState({
     display: "none",
     })
@@ -23,16 +37,20 @@ function App() {
         });
       }
     }
-    const [EditCreateChanelBtn, setEditCreateChanelBtn] = useState(false);
+
+    const [vidUploadPage, setVidUploadPage] = useState(false);
+    const [EditCreateChannelBtn, setEditCreateChannelBtn] = useState(false);
 
   return (
     <Router>
+      {vidUploadPage && <VideoUpload  setVidUploadPage={setVidUploadPage}/>}
+      
       {
-        EditCreateChanelBtn &&
-      <CreateEditChannel setEditCreateChanelBtn={setEditCreateChanelBtn}/>
-      }
+        EditCreateChannelBtn &&(
+      <CreateEditChannel setEditCreateChannelBtn={setEditCreateChannelBtn}/>
+      )}
       <Navbar
-        setEditCreateChanelBtn={setEditCreateChanelBtn}
+        setEditCreateChannelBtn={setEditCreateChannelBtn}
         toggleDrawer={toggleDrawer}
       />
       {
@@ -41,7 +59,7 @@ function App() {
           toggleDrawerSidebar={toggleDrawerSidebar}
         />
       }
-      <AllRoutes/>
+      <AllRoutes setVidUploadPage={setVidUploadPage} setEditCreateChannelBtn={setEditCreateChannelBtn}/>
     </Router>
   );
 }

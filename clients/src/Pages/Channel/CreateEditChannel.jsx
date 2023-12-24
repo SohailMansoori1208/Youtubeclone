@@ -2,7 +2,7 @@ import React from 'react'
 import './CreateEditChannel.css'
 import { useState } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
-import { updateChannelDate } from '../../actions/channelUsers';
+import { updateChannelData } from '../../actions/channelUsers';
 import { login } from '../../actions/auth';
 function CreateEditChannel({setEditCreateChannelBtn}) {
     //const CurrentUser = {
@@ -11,12 +11,11 @@ function CreateEditChannel({setEditCreateChannelBtn}) {
           //joinedOn: "2222-07-15T09:57:23.489Z",
        // },
        //};
-      const CurrentUser=useSelector(state=>state.currentUserReducer)
+      const CurrentUser=useSelector(state=>state.currentUserReducer);
 
        const [name, setName] = useState(CurrentUser?.result.name);
        const [desc, setDesc] = useState(CurrentUser?.result.desc);
        const dispatch = useDispatch();
-
        const handleSubmit = () => {
         if (!name) {
           alert("Plz Enter Name !");
@@ -24,15 +23,15 @@ function CreateEditChannel({setEditCreateChannelBtn}) {
           alert("Plz Enter Discription !");
         } else {
           dispatch(
-            updateChannelDate(CurrentUser?.result._id, {
+            updateChannelData(CurrentUser?.result._id, {
               name: name,
               desc: desc,
             })
           );
           setEditCreateChannelBtn(false);
-         setTimeout(() => {
-         dispatch(login({ email: CurrentUser?.result.email }));
-      }, 5000);
+          setTimeout(() => {
+            dispatch(login({ email: CurrentUser?.result.email }));
+          }, 5000);
         }
      };
 
@@ -48,20 +47,21 @@ function CreateEditChannel({setEditCreateChannelBtn}) {
         <div className='container2_CreateEditChannel'>
             <h1>
                  {CurrentUser?.result.name ? <>Edit</> : <>Create </>}
-                   Your Channel
+                  Your Channel
             </h1>
             <input
                 type='text'
                 placeholder='Enter Your/Channel Name'
                 className='ibox'
                 value={name}
+                name='text'
                 onChange={(e) => setName(e.target.value)}
 
             />
             <textarea
                 type="text"
                 rows={15}
-                placeholder={"Enter Chanel Description"}
+                placeholder={"Enter Channel Description"}
                 className={"ibox"}
                 value={desc}
                 onChange={(e) => setDesc(e.target.value)}
@@ -70,12 +70,12 @@ function CreateEditChannel({setEditCreateChannelBtn}) {
                 type="submit"
                 value={"Submit"}
                 onClick={handleSubmit}
-                className={"ibtn"}
+                className="ibtn"
             />
             
         </div>
     </div>
-  )
+  );
 }
 
-export default CreateEditChannel
+export default CreateEditChannel;

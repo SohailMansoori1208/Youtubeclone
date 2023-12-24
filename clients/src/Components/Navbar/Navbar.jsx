@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {login} from '../../actions/auth'
 import Auth from '../../Pages/Auth/Auth';
 
-function Navbar({toggleDrawer, setEditCreateChanelBtn}) {
+function Navbar({toggleDrawer, setEditCreateChannelBtn}) {
 
   const [AuthBtn, setAuthBtn] = useState(false)
 
@@ -117,7 +117,7 @@ function Navbar({toggleDrawer, setEditCreateChanelBtn}) {
     {
       AuthBtn &&
       <Auth 
-        setEditCreateChanelBtn={setEditCreateChanelBtn}
+        setEditCreateChannelBtn={setEditCreateChannelBtn}
         setAuthBtn={setAuthBtn}
         User={CurrentUser}
       />

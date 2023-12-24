@@ -31,8 +31,9 @@
     padding: 0.3rem;
     border: 2px solid rgb(137,243,250);
 }
-.ibox,
-.ibtn{
+.ibtn,
+.ibox
+{
     font-size: 1rem;
     padding: 0.2rem;
     background-color: transparent;
@@ -41,7 +42,7 @@
     margin: 0.2rem;
     font-weight: bold;
 }
-.btn{
+.ibtn{
     background-color: rgb(28, 28, 28);
     transition: 2s all ;
 }
@@ -58,8 +59,8 @@
     right: 50px;
     cursor: pointer;
     position: absolute;
-transition: 1s color;
+    transition: 1s color;
 }
-.ibtn_x{
+.ibtn_x:hover{
     color: orange;
 }

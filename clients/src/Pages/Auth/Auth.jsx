@@ -4,8 +4,9 @@ import { GoogleLogout } from 'react-google-login'
 import { BiLogOut } from 'react-icons/bi'
 import { useDispatch } from 'react-redux'
 import { setCurrentUser } from '../../actions/currentUsers'
+import { Link } from 'react-router-dom'
 
-function Auth({User, setAuthBtn,setEditCreateChanelBtn}) {
+function Auth({User, setAuthBtn,setEditCreateChannelBtn}) {
     const dispatch= useDispatch()
     const onLogoutSuccess=()=>{
         dispatch(setCurrentUser(null));
@@ -28,16 +29,23 @@ function Auth({User, setAuthBtn,setEditCreateChanelBtn}) {
                 <div className="email_Auth">{User?.result.email}</div>
             </p>
             <div className="btns_Auth">
-                {
-                    User?.result.name?<>
-                    </>:<>
-                <input type='submit' 
-                    className='btn_Auth'
-                    value="Create Your Channel"
-                    onClick={()=>setEditCreateChanelBtn(true)}
-                 />
+                {User?.result.name?(<>
+                    {
+                        <Link to={`/channelpage/${User?.result._id}`}className='btn_Auth'>
+                            Your Channel
+                        </Link>
+                    }
+                    </>
+                    ):(
+                    <>
+                        <input type='submit' 
+                        className='btn_Auth'
+                        value="Create Your Channel"
+                        onClick={()=>setEditCreateChannelBtn(true)}
+                         />
                 </>
-                }
+                )}
+
             <div>
             <GoogleLogout
                 clientId={"1022329792354-csrkq6am4ak7tai6v0p583f26stp7pl0.apps.googleusercontent.com"}
