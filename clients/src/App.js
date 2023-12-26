@@ -12,6 +12,8 @@ import { fetchAllChannel } from './actions/channelUsers';
 import VideoUpload from './Pages/VideoUpload/VideoUpload';
 import { getAllVideos } from './actions/video';
 import { getAlllikedVideo } from './actions/likedVideo';
+import { getAllwatchLater } from './actions/watchLater';
+import { getAllHistory } from './actions/History';
 
 
 function App() {
@@ -20,7 +22,9 @@ function App() {
   useEffect(() => {
     dispatch(fetchAllChannel());
     dispatch(getAllVideos());
-    dispatch(getAlllikedVideo);
+    dispatch(getAlllikedVideo());
+    dispatch(getAllwatchLater());
+    dispatch(getAllHistory());
   },[dispatch]);
 
   const [toggleDrawerSidebar, setToggleDrawerSidebar] = useState({
@@ -53,12 +57,12 @@ function App() {
         setEditCreateChannelBtn={setEditCreateChannelBtn}
         toggleDrawer={toggleDrawer}
       />
-      {
+      
         <DrawerSidebar
           toggleDrawer={toggleDrawer}
           toggleDrawerSidebar={toggleDrawerSidebar}
         />
-      }
+      
       <AllRoutes setVidUploadPage={setVidUploadPage} setEditCreateChannelBtn={setEditCreateChannelBtn}/>
     </Router>
   );

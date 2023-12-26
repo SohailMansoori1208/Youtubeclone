@@ -5,15 +5,22 @@ function WHLVideoList({page,CurrentUser,videoList}) {
   console.log(videoList)
   return (
     <>
-    {
-        videoList?.data?.filter(q=>q?.Viewer=== CurrentUser).reverse().map(m=>{
-            return(
-                <>
-                <ShowVideoList videoId={m?.videoId} key={m?._id}/>
-                </>
-            )
-        })
-    }
+     { CurrentUser ?(<>
+     {
+              videoList?.data?.filter(q=>q?.Viewer === CurrentUser).reverse().map(m=>{
+                return(
+                    <>
+                    <ShowVideoList videoId={m?.videoId} key={m?._id}/>
+                    </>
+    
+                )
+            })
+     }
+      </>) :(<> 
+      <h2 style={{color:"white"}}>Plz Login To Watch Your {page} </h2>
+      </>)
+
+     }
     </>
   )
 }

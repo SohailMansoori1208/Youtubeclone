@@ -7,32 +7,60 @@ import { useState } from 'react'
 import { AiFillDislike, AiFillLike, AiOutlineDislike, AiOutlineLike } from 'react-icons/ai'
 import { useDispatch, useSelector } from 'react-redux'
 import { likeVideo } from '../../actions/video'
-import { addTolikedVideo } from '../../actions/likedVideo'
+import { addTolikedVideo, deletelikedVideo } from '../../actions/likedVideo'
+import { addTowatchLater, deleteWatchLater } from '../../actions/watchLater'
 
 function LikeWatchLaterSavebtns({vv,vid}) {
 
     const CurrentUser = useSelector((state)=> state?.currentUserReducer);
     const dispatch = useDispatch();
-    const [SAveVideo, setSAveVideo] = useState(true);
+    const [SAveVideo, setSAveVideo] = useState(false);
     const [DislikeBtn, setDislikeBtn] = useState(false);
     const [LikeBtn, setLikeBtn] = useState(false);
 
     const likedVideoList = useSelector((state) => state.likedVideoReducer); 
+    const watchLaterList= useSelector(state=>state.watchLaterReducer);
+
     console.log(likedVideoList)
-    // useEffect(() => {
-    //     likedVideoList?.data?.filter(
-    //         (q) => q?.videoId === vid && q?.Viewer === CurrentUser?.result._id
-    //       )
-    //       .map(m => setLikeBtn(true));
-    //   }, []);
+    useEffect(() => {
+        likedVideoList?.data?.filter(
+            (q) => q?.videoId === vid && q?.Viewer === CurrentUser?.result._id
+          )
+          .map(m => setLikeBtn(true));
+
+          watchLaterList?.data?.filter(
+            (q) => q?.videoId === vid && q?.Viewer === CurrentUser?.result._id
+          )
+          .map((m) => setSAveVideo(true));
+      }, []);
 
     const toggleSavedVideo=()=>{
+        if(CurrentUser){
         if(SAveVideo){
             setSAveVideo(false);
+            dispatch(
+                deleteWatchLater({
+                  videoId: vid,
+                  Viewer: CurrentUser?.result._id,
+                })
+              );
+              dispatch(deletelikedVideo({
+                videoId: vid,
+                Viewer: CurrentUser?.result._id,
+              }))
         }else{
             setSAveVideo(true);
+            dispatch(
+                addTowatchLater({
+                  videoId: vid,
+                  Viewer: CurrentUser?.result._id,
+                })
+              );
         }
-    }
+        }else {
+            alert("Plz Login To save the video !");
+        } 
+    };
     const toggleLikeBtn=(e,lk)=>{
     if(CurrentUser){
         if(LikeBtn){
@@ -42,7 +70,7 @@ function LikeWatchLaterSavebtns({vv,vid}) {
                     id:vid,
                     Like:lk - 1,
                 })
-            )
+            );
         }else{
             setLikeBtn(true);
             dispatch(
@@ -55,13 +83,15 @@ function LikeWatchLaterSavebtns({vv,vid}) {
                 addTolikedVideo({
                     videoId:vid,
                     Viewer: CurrentUser?.result._id,
-            }))
+            })
+            );
             setDislikeBtn(false);
         }
         }else{
             alert("Please Login to give a like")
         }
     }
+
     const toggleDislikeBtn=(e,lk)=>{
         if(CurrentUser){
         if(DislikeBtn){
@@ -75,6 +105,10 @@ function LikeWatchLaterSavebtns({vv,vid}) {
                         Like:lk - 1,
                     })
                 )
+                dispatch(deletelikedVideo({
+                    videoId: vid,
+                    Viewer: CurrentUser?.result._id,
+                  }))
             }
             setLikeBtn(false);
         }
@@ -90,7 +124,7 @@ function LikeWatchLaterSavebtns({vv,vid}) {
 
         <div className="btn_videoPage">
 
-             <div className="like_videoPage" onClick={(e)=>toggleLikeBtn(e,vv.Like)}>
+             <div className="like_videoPage" onClick={(e)=>toggleLikeBtn(e, vv.Like)}>
                 {LikeBtn ? ( <>
                     <AiFillLike size={22} className='btns_videoPage'/>
                     </>
@@ -117,10 +151,10 @@ function LikeWatchLaterSavebtns({vv,vid}) {
             <div className="like_videoPage" onClick={()=>toggleSavedVideo()}>
                 {
                     SAveVideo ?<>
-                    <RiPlayListAddFill size={22} className='btns_videoPage'/>
+                    <MdPlaylistAddCheck size={22} className='btns_videoPage'/>
                     <b>Save</b>
                     </>:<>
-                    <MdPlaylistAddCheck size={22} className='btns_videoPage'/>
+                    <RiPlayListAddFill size={22} className='btns_videoPage'/>
                     <b>Save</b>
                     </>
                 } 

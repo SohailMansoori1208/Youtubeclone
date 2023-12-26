@@ -3,11 +3,16 @@ import './SearchBar.css';
 import {FaSearch} from 'react-icons/fa'
 import {BsMicFill} from 'react-icons/bs'
 import SearchList from './SearchList';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function SearchBar() {
   const [searchQuery, setSearchQuery] = useState("");
-  const [seachListA, setSeachList] = useState(false)
-  const TitleArray = ["video1","video2","Animation video","Movie"].filter(q=>q.toUpperCase().includes(searchQuery.toUpperCase()))
+  const [searchListA, setSearchList] = useState(false)
+  const TitleArray = useSelector(s=>s?.videoReducer)
+    ?.data?.filter(q=> q?.videoTitle.toUpperCase().includes(searchQuery?.toUpperCase())).map(m=>m?.videoTitle)
+  // console.log(TitleArray)
+  //const TitleArray = ["video1","video2","Animation video","Movie"].filter(q=>q.toUpperCase().includes(searchQuery.toUpperCase()))
 
 
   return (
@@ -17,14 +22,16 @@ function SearchBar() {
             <div className="search_div">
                  <input type='text' className='iBox_SearchBar' placeholder='Search'
                   onChange={e=>setSearchQuery(e.target.value)}
-                  value={setSearchQuery}
-                  onClick={e=>setSeachList(true)}
+                  value={searchQuery}
+                  onClick={e=>setSearchList(true)}
                  />
+                  <Link to={`/seacrh/${searchQuery}`}>
                  <FaSearch className="searchIcon_SearchBar"
-                  onClick={e=>setSeachList(false)}
+                  onClick={e=>setSearchList(false)}
                  />
+                 </Link>
                  <BsMicFill className="Mic_SearchBar"/>
-                 {searchQuery&& seachListA&&
+                 {searchQuery&& searchListA&&
                   <SearchList
                   setSearchQuery={setSearchQuery}
                   TitleArray={TitleArray}

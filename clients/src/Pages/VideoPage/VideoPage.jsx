@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 //import vid from '../../Components/Video/vid.mp4.mp4'
 import './VideoPage.css'
 import LikeWatchLaterSavebtns from './LikeWatchLaterSavebtns'
 import Comments from '../../Components/Comments/Comments'
 import { Link, useParams } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import moment from 'moment';
+import { addToHistory } from '../../actions/History'
+import { viewVideo } from '../../actions/video'
 function VideoPage() {
     const {vid}=useParams();
     console.log(vid)
@@ -16,6 +18,31 @@ function VideoPage() {
     const vids=useSelector(state=>state.videoReducer)?.data;
     console.log(vids)
     const vv = vids?.filter((q) => q._id === vid)[0];
+    const dispatch= useDispatch();
+    const CurrentUser = useSelector((state) => state?.currentUserReducer);
+
+    const handleHistory = () => {
+        dispatch(
+          addToHistory({
+            videoId: vid,
+            Viewer: CurrentUser?.result._id,
+          })
+        );
+      };
+
+      const handleViews=()=>{
+        dispatch( viewVideo({
+          id:vid
+        }))
+      }
+
+    useEffect(() => {
+        if (CurrentUser) {
+          handleHistory();
+        }
+        handleViews();
+      }, []);
+
   return (
     <>
         <div className="container_videoPage">
@@ -47,7 +74,7 @@ function VideoPage() {
                         <h2>
                             <u>Comments</u>
                         </h2>
-                        <Comments/>
+                        <Comments videoId={vv._id}/>
                     </div>
                 </div>
             </div>

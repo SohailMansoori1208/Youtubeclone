@@ -1,18 +1,42 @@
 import React,{useState} from 'react'
 import './Comments.css'
-function DisplayComments({cId,  commentBody,userCommented}) {
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteComment, editComment } from '../../actions/comments';
+import moment from 'moment';
+
+function DisplayComments({cId,  commentBody,userId,userCommented,commentedOn}) {
     const [Edit, setEdit] = useState(false);
     const [comtBdy, setcomtBdy] = useState("");
+    const [cmtId, setcmtId] = useState("");
+    const CurrentUser = useSelector((state) => state?.currentUserReducer);
+
+
 
     const handleEdit=(ctId, ctBdy)=>{
         setEdit(true);
-        setcomtBdy(ctBdy);
-    }
+         setcmtId(ctId);
+         setcomtBdy(ctBdy);
+     };
 
+    const dispatch= useDispatch();
     const handleOnSubmit=(e)=>{
         e.preventDefault();
+        if (!comtBdy) {
+            alert("Type Your comments");
+          } else {
+            dispatch(
+              editComment({
+                id: cmtId,
+                commentBody: comtBdy,
+              })
+            );
+            setcomtBdy("");
+          }
         setEdit(false)
-    }
+    };
+    const handleDel=(id)=>{
+        dispatch(deleteComment(id))
+      }
   return (
     <>
     {
@@ -31,11 +55,13 @@ function DisplayComments({cId,  commentBody,userCommented}) {
             <p className="comment_body">{commentBody}</p>
         )
     }
-        <p className="user_commented">- {userCommented} commented</p>
-        <p className="EditDel_Display_Comment">
+        <p className="user_commented">- {userCommented} commented {moment(commentedOn).fromNow()}</p>
+        {CurrentUser?.result._id === userId && (
+        <p className="EditDel_Display_Comment"> 
             <i onClick={()=>handleEdit(cId,commentBody)}>Edit</i>
-            <i>Delete</i>
+            <i onClick={()=>handleDel(cId)}>Delete</i>
         </p>
+        )}
     </>
   )
 }
